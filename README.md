@@ -1,5 +1,7 @@
 # custom_weight_picker
 
+https://stackoverflow.com/questions/75777268/custom-horizontal-slider-with-pointer-indicator
+
 A new Flutter project.
 
 ## Getting Started
