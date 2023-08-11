@@ -1,4 +1,5 @@
 import 'package:custom_weight_picker/widget/custom_widget.dart';
+import 'package:custom_weight_picker/widget/gif_shower.dart';
 import 'package:custom_weight_picker/widget/page_view_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,9 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Colors.blue.shade900,
         body: SafeArea(
-          child: PageViewPicker(width: MediaQuery.of(context).size.width)
+          child: Center(
+            child: GifShower()
+          )
         ),
       ),
     );

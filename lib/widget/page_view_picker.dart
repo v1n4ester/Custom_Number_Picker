@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 
 class PageViewPicker extends StatefulWidget {
   const PageViewPicker({super.key, required this.width});
@@ -105,4 +106,61 @@ class _PageViewPickerState extends State<PageViewPicker> {
       ),
     );
   }
+}
+
+class _CustomPageScrollPhysics extends ScrollPhysics {
+  final double start;
+  final double end;
+
+  const _CustomPageScrollPhysics({
+    required this.start,
+    required this.end,
+    ScrollPhysics? parent,
+  }) : super(parent: parent);
+
+  @override
+  _CustomPageScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return _CustomPageScrollPhysics(
+      parent: buildParent(ancestor),
+      start: start,
+      end: end,
+    );
+  }
+
+  @override
+  Simulation? createBallisticSimulation(
+    ScrollMetrics position,
+    double velocity,
+  ) {
+    final oldPosition = position.pixels;
+    final frictionSimulation =
+        FrictionSimulation(0.4, position.pixels, velocity * 0.2);
+
+    double newPosition = (frictionSimulation.finalX / 10).round() * 10;
+
+    final endPosition = end * 10 * 10;
+    final startPosition = start * 10 * 10;
+    if (newPosition > endPosition) {
+      newPosition = endPosition;
+    } else if (newPosition < startPosition) {
+      newPosition = startPosition;
+    }
+    if (oldPosition == newPosition) {
+      return null;
+    }
+    return ScrollSpringSimulation(
+      spring,
+      position.pixels,
+      newPosition.toDouble(),
+      velocity,
+      tolerance: tolerance,
+    );
+  }
+
+  @override
+  SpringDescription get spring => const SpringDescription(
+        mass: 20,
+        stiffness: 100,
+        damping: 0.8,
+      );
 }
